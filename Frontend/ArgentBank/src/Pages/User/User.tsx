@@ -2,8 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import "../../styles/main.scss";
 import argentBankLogo from '../../designs/img/argentBankLogo.png';
+import { useSelector, useDispatch} from 'react-redux';
+import { logout } from '../../features/counter/authSlice';
+import { RootState } from '../../app/store'; 
+
+
+
 
 const User: React.FC = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.auth.user); // Utilise le bon type pour RootState
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
   return (
     <>
       <nav className="main-nav">
