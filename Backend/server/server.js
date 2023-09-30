@@ -10,6 +10,7 @@ dotEnv.config()
 
 const app = express()
 const PORT = process.env.PORT || 3001
+const path = require('path');
 
 // Connect to the database
 dbConnection()
@@ -29,9 +30,14 @@ if (process.env.NODE_ENV !== 'production') {
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 }
 
-app.get('/', (req, res, next) => {
-  res.send('Hello from my Express server v2!')
-})
+app.use(express.static(path.join(__dirname, '../../Frontend/ArgentBank/index.html')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../Frontend/ArgentBank', 'index.html'));
+});
+
+
+
 
 app.listen(PORT, () => {
   console.log(`Server listening on http://localhost:${PORT}`)

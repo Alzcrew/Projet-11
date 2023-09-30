@@ -11,7 +11,7 @@ import { RootState } from '../../app/store';
 
 const User: React.FC = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.auth.user); // Utilise le bon type pour RootState
+  const user = useSelector((state: RootState) => state.auth.user); 
 
   const handleLogout = () => {
     dispatch(logout());
@@ -32,10 +32,10 @@ const User: React.FC = () => {
             <i className="fa fa-user-circle"></i>
             Tony
           </Link>
-          <Link to="/" className="main-nav-item">
+          <button onClick={handleLogout}>
             <i className="fa fa-sign-out"></i>
             Sign Out
-          </Link>
+            </button>
         </div>
       </nav>
       <main className="main bg-dark">

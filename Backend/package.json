@@ -20,6 +20,7 @@
   },
   "scripts": {
     "dev:server": "nodemon ./server/server.js",
+    "dev": "concurrently \"npm run dev:server\" \"cd Frontend && npm start\"",
     "populate-db": "node ./server/scripts/populateDatabase.js",
     "server": "node ./server/server.js"
   },
