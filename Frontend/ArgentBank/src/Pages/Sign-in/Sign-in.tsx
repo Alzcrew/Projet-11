@@ -20,10 +20,12 @@ const SignIn: React.FC = () => {
       username,
       password,
     };
-    
+    console.log('Credentials:', credentials);
     try {
-      const action = await dispatch(loginUser(credentials));  // Ajouté les credentials
+      const action = await dispatch(loginUser(credentials));
+      console.log('Action:', action);
       const payload = unwrapResult(action); 
+      console.log('Payload:', payload); 
       navigate('/User');
     } catch (err) {
       console.error('Failed to login: ', err);

@@ -1,5 +1,6 @@
 // Abstracts
 @import "./abstracts/variables";
+@import "./abstracts/mixins";
 
 
 // Base
@@ -7,9 +8,10 @@
 
 
 // Layout 
-@import "./layout/footer";
-@import "./layout/nav";
-
+@import "../components/Footer/footer";
+@import "../components/Navbar/nav";
+@import "../components/Header/header";
+@import "../components/AccountSection/accountsection";
 
 // Pages 
 @import "../Pages/Home/Home";
