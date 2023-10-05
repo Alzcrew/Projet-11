@@ -20,12 +20,10 @@ const SignIn: React.FC = () => {
       username,
       password,
     };
-    console.log('Credentials:', credentials);
+
     try {
       const action = await dispatch(loginUser(credentials));
-      console.log('Action:', action);
       const payload = unwrapResult(action); 
-      console.log('Payload:', payload); 
       navigate('/User');
     } catch (err) {
       console.error('Failed to login: ', err);
@@ -42,14 +40,8 @@ const SignIn: React.FC = () => {
           />
           <h1 className="sr-only">Argent Bank</h1>
         </Link>
-        <div>
-        <Link to="/sign-in" className="main-nav-item">
-            <i className="fa fa-user-circle"></i>
-            Sign In
-        </Link>
-        </div>
       </nav>
-      <main className="main bg-dark">
+      <main className="main bg-sign-in">
         <section className="sign-in-content">
           <i className="fa fa-user-circle sign-in-icon"></i>
           <h1>Sign In</h1>

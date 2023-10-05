@@ -2,7 +2,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 20px;
+  margin: 30px 100px 0px 100px;
+
+  .main-nav-container {
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  }
 
   a {
     font-weight: bold;
@@ -15,12 +21,29 @@
 
   .main-nav-item {
     text-decoration: none;
-    margin-right: 0.5rem;
-
+    margin-right: 40px;
+    color: $primary-color;
+    display: flex;
+    align-items: center;
     &:hover {
       text-decoration: underline;
     }
   }
+
+
+  .main-nav-user {
+    margin-left: 10px;
+    border-radius: 50%; 
+    background-color: $primary-color; 
+    height: 35px;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+  
+
 
   .main-nav-logo {
     display: flex;

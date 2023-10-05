@@ -44,6 +44,7 @@ module.exports.getUserProfile = async serviceData => {
     console.error('Error in userService.js', error)
     throw new Error(error)
   }
+  
 }
 
 module.exports.loginUser = async serviceData => {

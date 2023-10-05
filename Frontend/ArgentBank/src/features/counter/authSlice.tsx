@@ -1,5 +1,24 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+export interface User {
+  status: number;
+  message: string;
+  body: {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    userName: string;
+  };
+}
+
+const initialState: { user: User | null, status: string, error: string | null, token: string | null } = {
+  user: null,
+  status: 'idle',
+  error: null,
+  token: localStorage.getItem('token'),
+};
+
 export const loginUser = createAsyncThunk(
   'auth/login',
   async (credentials: { username: string; password: string }, { rejectWithValue }) => {
@@ -18,6 +37,7 @@ export const loginUser = createAsyncThunk(
         const data = await response.json();
         localStorage.setItem('token', data.body.token);
         return data;
+        
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -28,23 +48,22 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+
 export const authSlice = createSlice({
   name: 'auth',
-  initialState: {
-    user: null,
-    status: 'idle',
-    error: null,
-    token: localStorage.getItem('token'),  // <-- Initialisation du token depuis le localStorage
-  },
+  initialState,
   reducers: {
     logout: (state) => {
       state.user = null;
-      state.token = null;  // <-- Réinitialisation du token
+      state.token = null;
       localStorage.removeItem('token');
     },
     setUser: (state, action) => {
       state.user = action.payload;
-      state.token = action.payload.token;  // <-- Mise à jour du token
+      state.token = action.payload.token;
+    },
+    setToken: (state, action) => {
+      state.token = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -60,5 +79,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout, setUser } = authSlice.actions;  
+export const { logout, setUser, setToken } = authSlice.actions;
 export default authSlice.reducer;

@@ -1,0 +1,69 @@
+.edit-form {
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+}
+
+.edit-title {
+font-weight: 400;
+}
+
+.input-container {
+margin: 7px;
+}
+
+.input-text {
+border-radius: 5px;
+padding: 5px;
+margin-left: 5px;
+border: 1px solid gray;
+}
+
+input[type="text"]:focus {
+    border: 2px solid rgb(121, 120, 120); 
+    outline: none; 
+  }
+
+.input-text-disabled {
+    border-radius: 5px;
+    padding: 5px;
+    margin-left: 5px;
+    background-color: rgb(218, 218, 218);
+    border: 1px solid rgb(112, 112, 112);
+    color: rgb(145, 144, 144);
+    }
+
+    .btn-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .submit-btn {
+    margin:25px 4px;
+    padding: 15px 45px;
+    border-radius: 5px;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    }
+
+    .success-message {
+    color: $primary-color;
+    }
+
+    .error-message {
+    color: rgb(228, 37, 37);
+    }
+
+    .cancel-btn {
+    padding: 15px 45px;
+    margin: 25px 4px;
+    border-radius: 5px;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    }
+
+    .cancel-btn:hover , .submit-btn:hover {
+        background-color: #056d47da;
+    }

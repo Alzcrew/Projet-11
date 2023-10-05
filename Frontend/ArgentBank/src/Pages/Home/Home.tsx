@@ -9,17 +9,17 @@ import iconSecurity from "../../designs/img/icon-security.png";
 const Home: React.FC = () => {
   return (
     <>
-      <nav className="main-nav">
+      <nav className="home-nav">
       <Link to="/" className="main-nav-logo">
           <img
-            className="main-nav-logo-image"
+            className="home-nav-logo-image"
             src={argentBankLogo}
             alt="Argent Bank Logo"
           />
           <h1 className="sr-only">Argent Bank</h1>
           </Link>
         <div>
-        <Link to="/sign-in" className="main-nav-item">
+        <Link to="/sign-in" className="home-nav-item">
             Sign In
             </Link>
         </div>

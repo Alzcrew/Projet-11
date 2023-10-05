@@ -1,42 +1,55 @@
+.account-clickable {
+  cursor: pointer;
+  }
+
 .account {
     display: flex;
     justify-content: space-between;
     align-items: center;
     border: 1px solid black;
-    background-color: #fff;
+    background-color: #393e46;
     width: 80%;
     margin: 0 auto;
     flex-direction: column;
-    padding: 1.5rem;
     box-sizing: border-box;
     text-align: left;
     margin-bottom: 2rem;
-  
+    padding: 2rem;
+    border: none;
+    color: white;
+    border-radius: 10px;
     &-amount {
       margin: 0;
       font-size: 2.5rem;
-      font-weight: bold;
+      font-weight: normal;
     }
   
     &-amount-description {
-      margin: 0;
+      margin: 20px 0 0 0 ;
     }
   
     &-title {
       margin: 0;
       padding: 0;
       font-size: 1rem;
-      font-weight: normal;
+      font-weight: 400;
     }
   
     &-content-wrapper {
       width: 100%;
       flex: 1;
     }
-  
+
     .transaction-button {
-      @include button-styles;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: white;
     }
+
+
+
+  
   
     @media (min-width: 720px) {
       flex-direction: row;
@@ -47,9 +60,6 @@
         }
       }
   
-      .transaction-button {
-        width: 200px;
-      }
     }
   }
   

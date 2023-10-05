@@ -1,7 +1,11 @@
 .header {
     padding-top: 1px;
-    color: #fff;
+    color: #2c3e50;
     margin-bottom: 2rem;
+  }
+
+  .header-title {
+  font-weight: 400;
   }
 
   .edit-button {
@@ -9,5 +13,12 @@
     background-color: $primary-color;
     color: #fff;
     font-weight: bold;
-    padding: 10px;
+    padding: 15px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .edit-button:hover {
+  background-color: #056d47da;
   }

@@ -1,3 +1,27 @@
+.home-nav-logo-image {
+  max-width: 100%;
+  width: 200px;
+}
+
+.home-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px;
+}
+.home-nav-item {
+  text-decoration: none;
+  margin-right: 40px;
+  display: flex;
+  align-items: center;
+  color: #3b3b3b;
+  font-weight: 700;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+
 .hero {
   background-image: url('.././designs/img/bank-tree.jpeg');
   background-position: 0 -50px;
