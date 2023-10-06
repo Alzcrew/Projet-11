@@ -18,10 +18,11 @@ const Home: React.FC = () => {
           />
           <h1 className="sr-only">Argent Bank</h1>
           </Link>
-        <div>
+        <div className='home-nav-container'>
         <Link to="/sign-in" className="home-nav-item">
             Sign In
             </Link>
+            <Link to="/sign-up" className='home-nav-item'>Sign Up</Link>
         </div>
       </nav>
       <main>

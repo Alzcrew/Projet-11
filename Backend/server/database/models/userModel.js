@@ -1,12 +1,20 @@
 const mongoose = require('mongoose')
 
+const accountSchema = new mongoose.Schema({
+  accountId: String,
+  title: String,
+  amount: Number,
+  description: String,
+})
+
 const userSchema = new mongoose.Schema(
   {
     email: String,
     password: String,
     firstName: String,
     lastName: String,
-    userName: String
+    userName: String,
+    accounts: [accountSchema],
   },
   {
     timestamps: true,

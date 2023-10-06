@@ -13,7 +13,11 @@ module.exports.validateToken = (req, res, next) => {
     const decodedToken = jwt.verify(
       userToken,
       process.env.SECRET_KEY || 'default-secret-key'
-    )
+    );
+
+    req.user = decodedToken;
+    console.log(req.user)
+
     return next()
   } catch (error) {
     console.error('Error in tokenValidation.js', error)

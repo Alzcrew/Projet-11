@@ -273,25 +273,25 @@ definitions:
   Account:
     type: object
     properties:
-      id:
+      accountId:
         type: string
       title:
         type: string
       amount:
-        type: string
+        type: number
       description:
         type: string
   Transaction:
     type: object
     properties:
-      id:
+      accountId:
         type: string
       date:
         type: string
       description:
         type: string
       amount:
-        type: string
+        type: number
       balance:
         type: string
       type:
