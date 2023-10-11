@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { restart } = require('nodemon')
+
 
 module.exports.validateToken = (req, res, next) => {
   let response = {}
@@ -16,6 +16,7 @@ module.exports.validateToken = (req, res, next) => {
     );
 
     req.user = decodedToken;
+    console.log("Decoded Token:", decodedToken);
     console.log(req.user)
 
     return next()

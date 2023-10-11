@@ -1,11 +1,23 @@
 const mongoose = require('mongoose')
 
+const transactionSchema = new mongoose.Schema({
+  date: String,
+  description: String,
+  amount: Number,
+  balance: String,
+  type: String,
+  category: String,
+  note: String
+});
+
 const accountSchema = new mongoose.Schema({
   accountId: String,
   title: String,
   amount: Number,
   description: String,
+  transactions: [transactionSchema]
 })
+
 
 const userSchema = new mongoose.Schema(
   {

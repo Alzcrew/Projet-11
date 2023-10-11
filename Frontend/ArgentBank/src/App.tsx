@@ -1,4 +1,3 @@
-// App.tsx
 import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +8,7 @@ import SignUp from './Pages/Sign-up/Sign-up';
 import SignIn from './Pages/Sign-in/Sign-in';
 import { setToken } from './features/counter/authSlice';  
 import EditUserPage from './Pages/edit/Edit-username';
+import AccountTransaction from './Pages/Account/Account-details';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -30,6 +30,7 @@ const App = () => {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/edit-username" element={user || token ? <EditUserPage /> : <Navigate to="/sign-in" />} />
         <Route path='/sign-up' element={<SignUp />} ></Route>
+        <Route path='/transactions/:accountId' element={<AccountTransaction />} />
       </Routes>
     </BrowserRouter>
   );

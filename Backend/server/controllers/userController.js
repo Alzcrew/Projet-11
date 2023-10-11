@@ -91,3 +91,44 @@ module.exports.getAccounts = async (req, res) => {
   }
   return res.status(response.status).send(response)
 }
+
+module.exports.getTransactions = async (req, res) => {
+  let response = {};
+
+  try {
+    const userId = req.user.id;
+    const accountId = req.params.accountId;
+    console.log("User ID:", userId);  
+    console.log("Account ID:", accountId);
+    const responseFromService = await userService.getTransactions(userId, accountId);
+    console.log("Response from Service:", responseFromService);
+    response.status = 200;
+    response.message = 'Successfully got transactions';
+    response.body = responseFromService;
+  } catch (error) {
+    console.log('Error in getTransactions - userController.js');
+    console.log(error)
+    response.status = 400;
+    response.message = error.message;
+  }
+
+  return res.status(response.status).send(response);
+};
+
+module.exports.addTransaction = async (req, res) => {
+  let response = {};
+  try {
+    const userId = req.user.id;
+    const accountId = req.params.accountId;
+    const transactionData = req.body;
+    const responseFromService = await userService.addTransaction(userId, accountId, transactionData);
+    response.status = 201;
+    response.message = 'Transaction successfully added';
+    response.body = responseFromService;
+  } catch (error) {
+    response.status = 400;
+    response.message = error.message;
+  }
+  return res.status(response.status).send(response);
+};
+

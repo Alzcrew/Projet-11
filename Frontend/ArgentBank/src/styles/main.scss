@@ -12,6 +12,8 @@
 @import "../components/Navbar/nav";
 @import "../components/Header/header";
 @import "../components/AccountSection/accountsection";
+@import "../components/ModalAddTransaction/modal-add";
+@import "../components/ModalDeleteTransaction/modal-delete";
 
 // Pages 
 @import "../Pages/Home/Home";
@@ -19,5 +21,6 @@
 @import "../Pages/User/User";
 @import "../Pages/edit/edit-username.";
 @import "../Pages/Sign-up/Sign-up";
+@import "../Pages/Account/Account-details";
 
 

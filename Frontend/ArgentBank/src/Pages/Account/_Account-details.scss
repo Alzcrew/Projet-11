@@ -1,0 +1,97 @@
+.account-detail-container {
+    margin-top: 30px;
+}
+
+.categories-container {
+    display: flex;
+    justify-content: space-between;
+    width: 68%;
+    margin: 0px auto 10px auto;
+}
+
+.collapses-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 80%;
+    margin: 0px auto 10px auto;
+}
+
+.collapse-close-details {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    margin: 0px auto 10px auto;
+}
+
+.transaction-container {
+    border: 1px solid black;
+    background-color: $primary-color;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: left;
+    margin-bottom: 1rem;
+    border: none;
+    color: white;
+    border-radius: 10px;
+}
+
+.add-delete-transaction {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.add-transaction {
+    margin-left: 10px;
+    border-radius: 50%; 
+    background-color: $primary-color; 
+    height: 35px;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    cursor: pointer;
+}
+
+.delete-transaction {
+    margin-left: 10px;
+    border-radius: 50%;
+    background-color: $primary-color; 
+    height: 35px;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    cursor: pointer;
+}
+
+.transaction-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 10px;
+}
+
+.transaction-header svg {
+    padding-top: 3px;
+}
+
+.transaction-details {
+    padding: 0px 20px 10px 28px; 
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+}
+
+.transaction-detail {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.label {
+    font-weight: 300;
+}

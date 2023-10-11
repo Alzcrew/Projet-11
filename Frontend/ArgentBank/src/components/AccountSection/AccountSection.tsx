@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
 interface AccountSectionProps {
@@ -8,13 +8,19 @@ interface AccountSectionProps {
   amount: string;
   description: string;
   id: string;
+  icon?: any;
+  onClickIcon?: () => void; 
 }
 
-export const AccountSection: React.FC<AccountSectionProps> = ({ title, amount, description, id }) => {
+export const AccountSection: React.FC<AccountSectionProps> = ({ title, amount, description, id, icon }) => {
   const navigate = useNavigate();
 
   const handleTransactionClick = () => {
-    navigate(`/transactions/${id}`);
+    if (icon === faXmark) {
+      navigate('/user');
+    } else {
+      navigate(`/transactions/${id}`);
+    }
   };
 
   return (
@@ -27,7 +33,7 @@ export const AccountSection: React.FC<AccountSectionProps> = ({ title, amount, d
         </div>
         <div className="account-content-wrapper cta">
           <button className="transaction-button">
-            <FontAwesomeIcon icon={faChevronRight} size='6x' />
+            <FontAwesomeIcon icon={icon || faChevronRight} size='6x' />
           </button>
         </div>
       </section>

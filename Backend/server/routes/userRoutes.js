@@ -13,6 +13,9 @@ router.post(
   userController.getUserProfile
 )
 
+router.post('/accounts/:accountId/transactions', tokenValidation.validateToken, userController.addTransaction);
+
+
 router.put(
   '/profile',
   tokenValidation.validateToken,
@@ -24,5 +27,8 @@ router.get(
   tokenValidation.validateToken,
   userController.getAccounts
 )
+
+router.get('/accounts/:accountId/transactions', tokenValidation.validateToken, userController.getTransactions);
+
 
 module.exports = router
