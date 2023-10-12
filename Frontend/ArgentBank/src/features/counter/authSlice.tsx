@@ -48,6 +48,34 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const updateUsername = createAsyncThunk(
+  'auth/updateUsername',
+  async (newUsername: string, { rejectWithValue }) => {
+    const storedToken = localStorage.getItem('token');
+    try {
+      const res = await fetch('http://localhost:3001/api/v1/user/profile', {
+        method: "PUT",
+        headers: {
+          'Authorization': `Bearer ${storedToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userName: newUsername })
+      });
+      const data = await res.json();
+      if (data.status === 200) {
+        return newUsername;
+      } else {
+        return rejectWithValue("Une erreur s'est produite lors de la mise à jour.");
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue("An unknown error occurred");
+    }
+  }
+);
+
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -76,8 +104,13 @@ export const authSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message;
       });
+      builder.addCase(updateUsername.fulfilled, (state, action) => {
+    if (state.user) {
+      state.user.body.userName = action.payload;
+    }
+  });
   },
 });
 
-export const { logout, setUser, setToken } = authSlice.actions;
+export const { logout, setUser, setToken} = authSlice.actions;
 export default authSlice.reducer;

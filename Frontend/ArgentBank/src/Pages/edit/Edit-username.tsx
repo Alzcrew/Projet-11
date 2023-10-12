@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
-import { setUser, logout } from '../../features/counter/authSlice';
+import { setUser, logout, updateUsername } from '../../features/counter/authSlice';
 import { User as UserType } from '../../features/counter/authSlice';
 import { AccountSection } from '../../components/AccountSection/AccountSection';
 import NavBar from '../../components/Navbar/Nav';
@@ -12,26 +12,22 @@ const EditUserPage: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.auth.user) as UserType | null;
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state: RootState) => state.auth.user) as UserType | null;
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       const storedToken = localStorage.getItem('token');
       if (storedToken) {
-        try {
-          const res = await fetch('http://localhost:3001/api/v1/user/profile', {
-            method: "POST",
-            headers: {
-              'Authorization': `Bearer ${storedToken}`
-            }
-          });
-          const data = await res.json();
-          dispatch(setUser(data));
-        } catch (error) {
-          console.error("Erreur lors de la récupération du profil utilisateur:", error);
-        }
+        const res = await fetch('http://localhost:3001/api/v1/user/profile', {
+          method: "POST",
+          headers: {
+            'Authorization': `Bearer ${storedToken}`
+          }
+        });
+        const data = await res.json();
+        dispatch(setUser(data));
       }
     };
     fetchUserProfile();
@@ -53,26 +49,19 @@ const EditUserPage: React.FC = () => {
       return;
     }
 
-    const storedToken = localStorage.getItem('token');
-    const res = await fetch('http://localhost:3001/api/v1/user/profile', {
-      method: "PUT",
-      headers: {
-        'Authorization': `Bearer ${storedToken}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ userName: username })
-    });
-    const data = await res.json();
-
-    if (data.status === 200) {
-      setSuccessMessage("Nom d'utilisateur mis à jour !");
-      setErrorMessage(null);
-      setTimeout(() => {
-        navigate('/user');
-      }, 2000);
-    } else {
-      setErrorMessage("Une erreur s'est produite lors de la mise à jour.");
-    }
+    dispatch(updateUsername(username))
+      .then((result) => {
+        if (result.meta.requestStatus === 'fulfilled') {
+          setSuccessMessage("Nom d'utilisateur mis à jour !");
+          setErrorMessage(null);
+          setTimeout(() => {
+            navigate('/user');
+          }, 2000);
+        }
+      })
+      .catch((error) => {
+        setErrorMessage("Une erreur s'est produite lors de la mise à jour.");
+      });
   };
 
   return (
