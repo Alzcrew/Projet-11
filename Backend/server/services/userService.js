@@ -148,8 +148,84 @@ module.exports.addTransaction = async (userId, accountId, transactionData) => {
   if (!account) {
     throw new Error('Account not found!');
   }
+  transactionData.transactionId = uuidv4();
   account.transactions.push(transactionData);
   await user.save();
   return transactionData;
+};
+
+module.exports.deleteTransaction = async (userId, accountId, transactionId) => {
+  try {
+    console.log("deleteTransaction called");
+    console.log("User ID:", userId);
+    console.log("Account ID:", accountId);
+    console.log("Transaction ID:", transactionId);
+    console.log("About to find user by ID");
+
+    const user = await User.findById(userId);
+    console.log("User found:", user);
+
+    if (!user) {
+      throw new Error('User not found!');
+    }
+
+    const account = user.accounts.find(acc => acc.accountId === accountId);
+    if (!account) {
+      throw new Error('Account not found!');
+    }
+
+    // Log pour vérifier les transactions avant la suppression
+    console.log("Transactions before deletion:", account.transactions.map(t => t._id.toString()));
+
+    // Log pour vérifier le type de transactionId
+    console.log("Type of transactionId:", typeof transactionId);
+
+    const transactionIndex = account.transactions.findIndex(trans => {
+      // Log pour vérifier le type de trans._id
+      console.log("Type of trans._id:", typeof trans._id);
+      return trans._id.toString() === transactionId;
+    });
+
+    // Log pour vérifier si la transaction a été trouvée
+    console.log("Transaction index found:", transactionIndex);
+
+    if (transactionIndex === -1) {
+      throw new Error('Transaction not found!');
+    }
+
+    account.transactions.splice(transactionIndex, 1);
+
+    // Log pour vérifier les transactions après la suppression
+    console.log("Transactions after deletion:", account.transactions.map(t => t._id.toString()));
+
+    await user.save();
+    console.log("User saved");
+
+    return { message: 'Transaction deleted' };
+  } catch (error) {
+    console.log("Error in deleteTransaction:", error);
+  }
+};
+
+module.exports.updateTransaction = async (userId, accountId, transactionId, transactionData) => {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new Error('User not found!');
+  }
+  const account = user.accounts.find(acc => acc.accountId === accountId);
+  if (!account) {
+    throw new Error('Account not found!');
+  }
+  const transaction = account.transactions.find(trans => trans._id.toString() === transactionId);
+  if (!transaction) {
+    throw new Error('Transaction not found!');
+  }
+  
+  // Update the transaction data here
+  transaction.category = transactionData.category;
+  transaction.note = transactionData.note;
+
+  await user.save();
+  return transaction;
 };
 

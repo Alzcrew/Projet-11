@@ -2,18 +2,37 @@ import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
 import { setUser, logout, updateUsername } from '../../features/counter/authSlice';
-import { User as UserType } from '../../features/counter/authSlice';
 import { AccountSection } from '../../components/AccountSection/AccountSection';
 import NavBar from '../../components/Navbar/Nav';
 import { Footer } from '../../components/Footer/Footer';
 import { useNavigate } from 'react-router-dom';
 
+interface Account {
+  accountId: string;
+  title: string;
+  amount: number;
+  description: string;
+}
+
+interface TransactionType {
+  accountId: string;
+  date: string;
+  description: string;
+  amount: number;
+  balance: string;
+  type: string;
+  category: string;
+  note: string;
+}
+
 const EditUserPage: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [totalBalances, setTotalBalances] = useState<{ [key: string]: number }>({});
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state: RootState) => state.auth.user) as UserType | null;
+  const user = useAppSelector((state: RootState) => state.auth.user);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,6 +50,54 @@ const EditUserPage: React.FC = () => {
       }
     };
     fetchUserProfile();
+  }, [dispatch]);
+
+  const fetchTransactions = async (accountId: string) => {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      const res = await fetch(`http://localhost:3001/api/v1/user/accounts/${accountId}/transactions`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${storedToken}`,
+        },
+      });
+      const data = await res.json();
+      return data.body;
+    }
+    return [];
+  };
+
+  const calculateTotalBalance = async (accountId: string) => {
+    const transactions: TransactionType[] = await fetchTransactions(accountId);
+    return transactions.reduce((acc: number, transaction: TransactionType) => acc + transaction.amount, 0);
+  };
+
+  useEffect(() => {
+    const fetchTotalBalances = async () => {
+      const newTotalBalances: { [key: string]: number } = {};
+      for (const account of accounts) {
+        newTotalBalances[account.accountId] = await calculateTotalBalance(account.accountId);
+      }
+      setTotalBalances(newTotalBalances);
+    };
+
+    fetchTotalBalances();
+  }, [accounts]);
+
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      const storedToken = localStorage.getItem('token');
+      const res = await fetch('http://localhost:3001/api/v1/user/accounts', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
+      });
+      const { body } = await res.json();
+      setAccounts(body);
+    };
+
+    fetchAccounts();
   }, [dispatch]);
 
   const handleCancel = () => {
@@ -93,9 +160,15 @@ const EditUserPage: React.FC = () => {
             <button type="button" className='cancel-btn' onClick={handleCancel}>Cancel</button>
           </div>
         </form>
-        <AccountSection  id="someId1" title="Argent Bank Checking (x8349)" amount="$2,082.79" description="Available Balance" />
-        <AccountSection  id="someId2" title="Argent Bank Savings (x6712)" amount="$10,928.42" description="Available Balance" />
-        <AccountSection  id="someId3" title="Argent Bank Credit Card (x8349)" amount="$184.30" description="Current Balance" />
+        {accounts.map((account) => (
+          <AccountSection
+            key={account.accountId}
+            id={account.accountId}
+            title={account.title}
+            amount={`$${totalBalances[account.accountId] || 0}`}
+            description="Available Balance"
+          />
+        ))}
       </main>
       <Footer />
     </>

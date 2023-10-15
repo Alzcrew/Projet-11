@@ -14,19 +14,21 @@ const customStyles = {
 
 Modal.setAppElement('#root');
 
-interface AddTransactionModalProps {
-    isOpen: boolean;
-    onRequestClose: () => void;
-  }
+interface DeleteTransactionModalProps {
+  isOpen: boolean;
+  onRequestClose: () => void;
+  onDelete: (transactionId: string | null) => void;  
+  selectedTransaction: string | null;
+}
 
-  const DeleteTransactionModal: React.FC<AddTransactionModalProps> = ({ isOpen, onRequestClose }) => {
-    return (
-        <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
-        <div className="modal-content">
+const DeleteTransactionModal: React.FC<DeleteTransactionModalProps> = ({ isOpen, onRequestClose, onDelete, selectedTransaction }) => {
+  return (
+    <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
+      <div className="modal-content">
         <h2>Supprimer une transaction</h2>
         <p>Êtes-vous sûr de vouloir supprimer cette transaction?</p>
-        <button type="button" className='submit-btn'>Oui</button>
-        <button type="button" className='submit-btn'>Non</button>
+        <button type="button" className='submit-btn' onClick={() => onDelete(selectedTransaction)}>Oui</button>
+        <button type="button" className='submit-btn' onClick={onRequestClose}>Non</button>
       </div>
     </Modal>
   );

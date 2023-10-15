@@ -14,11 +14,54 @@ interface Account {
   description: string;
 }
 
+interface TransactionType {
+  accountId: string;
+  date: string;
+  description: string;
+  amount: number;
+  balance: string;
+  type: string;
+  category: string;
+  note: string;
+}
 
 const User: React.FC = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
   const [accounts, setAccounts] = useState<Account[]>([]);
+  const [totalBalances, setTotalBalances] = useState<{ [key: string]: number }>({});
+
+  const fetchTransactions = async (accountId: string) => {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      const res = await fetch(`http://localhost:3001/api/v1/user/accounts/${accountId}/transactions`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${storedToken}`,
+        },
+      });
+      const data = await res.json();
+      return data.body;
+    }
+    return [];
+  };
+
+  const calculateTotalBalance = async (accountId: string) => {
+    const transactions: TransactionType[] = await fetchTransactions(accountId);
+    return transactions.reduce((acc: number, transaction: TransactionType) => acc + transaction.amount, 0);
+  };
+
+  useEffect(() => {
+    const fetchTotalBalances = async () => {
+      const newTotalBalances: { [key: string]: number } = {};
+      for (const account of accounts) {
+        newTotalBalances[account.accountId] = await calculateTotalBalance(account.accountId);
+      }
+      setTotalBalances(newTotalBalances);
+    };
+
+    fetchTotalBalances();
+  }, [accounts]);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
@@ -60,18 +103,14 @@ const User: React.FC = () => {
       <main className="main bg-dark">
         <Header
           title="Welcome back,"
-          username={
-            user?.body?.firstName && user?.body?.lastName
-              ? `${user.body.firstName} ${user.body.lastName}`
-              : 'Loading...'
-          }
+          username={user?.body?.userName ? user.body.userName : 'Loading...'}
         />
         {accounts.map((account) => (
           <AccountSection
             key={account.accountId}
             id={account.accountId}
             title={account.title}
-            amount={`$${account.amount}`}
+            amount={`$${totalBalances[account.accountId] || 0}`}
             description="Available Balance"
           />
         ))}

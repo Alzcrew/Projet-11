@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchUpdatedTransactions } from '../../features/counter/authSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faPen } from '@fortawesome/free-solid-svg-icons';
+import { AppDispatch } from '../../app/store';
 
 interface CollapseTransactionProps {
   date: string;
@@ -11,43 +14,39 @@ interface CollapseTransactionProps {
   category: string;
   note: string;
   accountId: string;
+  transactionId: string;
 }
 
-const CollapseTransaction: React.FC<CollapseTransactionProps> = ({ date, description, amount, balance, transactionType, category, note, accountId }) => {
+const CollapseTransaction: React.FC<CollapseTransactionProps> = ({ date, description, amount, balance, transactionType, category, note, accountId, transactionId }) => {
+  const dispatch: AppDispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [isEditingCategory, setIsEditingCategory] = useState(false);
   const [isEditingNote, setIsEditingNote] = useState(false);
   const [newCategory, setNewCategory] = useState(category);
   const [newNote, setNewNote] = useState(note);
 
-  const toggleCollapse = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleEditCategory = () => {
-    setIsEditingCategory(!isEditingCategory);
-  };
-
-  const handleEditNote = () => {
-    setIsEditingNote(!isEditingNote);
-  };
+  const toggleCollapse = () => setIsOpen(!isOpen);
+  const handleEditCategory = () => setIsEditingCategory(!isEditingCategory);
+  const handleEditNote = () => setIsEditingNote(!isEditingNote);
 
   const handleUpdate = async () => {
     setIsEditingCategory(false);
     setIsEditingNote(false);
-    const payload = {
-      category: newCategory,
-      note: newNote,
-    };
+
+    const payload = { category: newCategory, note: newNote };
     const storedToken = localStorage.getItem('token');
-    await fetch(`http://localhost:3001/api/v1/user/accounts/${accountId}/transactions`, {
+
+    const response = await fetch(`http://localhost:3001/api/v1/user/accounts/${accountId}/transactions/${transactionId}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${storedToken}`
-      },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${storedToken}` },
       body: JSON.stringify(payload)
     });
+
+    if (response.ok) {
+      setNewCategory(newCategory);
+      setNewNote(newNote);
+      dispatch(fetchUpdatedTransactions(accountId));
+    }
   };
 
   return (
@@ -82,7 +81,7 @@ const CollapseTransaction: React.FC<CollapseTransactionProps> = ({ date, descrip
                   <button onClick={handleUpdate}>Confirmer</button>
                 </>
               ) : (
-                <span>{category}</span>
+                <span>{newCategory}</span>
               )}
               <FontAwesomeIcon icon={faPen} onClick={handleEditCategory} />
             </div>
@@ -96,7 +95,7 @@ const CollapseTransaction: React.FC<CollapseTransactionProps> = ({ date, descrip
                   <button onClick={handleUpdate}>Confirmer</button>
                 </>
               ) : (
-                <span>{note}</span>
+                <span>{newNote}</span>
               )}
               <FontAwesomeIcon icon={faPen} onClick={handleEditNote} />
             </div>

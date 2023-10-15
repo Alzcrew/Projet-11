@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const transactionSchema = new mongoose.Schema({
+  transactionId: String,
   date: String,
   description: String,
   amount: Number,

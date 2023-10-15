@@ -132,3 +132,38 @@ module.exports.addTransaction = async (req, res) => {
   return res.status(response.status).send(response);
 };
 
+module.exports.deleteTransaction = async (req, res) => {
+  let response = {};
+  try {
+    const userId = req.user.id;
+    const accountId = req.params.accountId;
+    const transactionId = req.params.transactionId;
+    const responseFromService = await userService.deleteTransaction(userId, accountId, transactionId);
+    response.status = 200;
+    response.message = 'Transaction successfully deleted';
+    response.body = responseFromService;
+  } catch (error) {
+    response.status = 400;
+    response.message = error.message;
+  }
+  return res.status(response.status).send(response);
+};
+
+module.exports.updateTransaction = async (req, res) => {
+  let response = {};
+  try {
+    const userId = req.user.id;
+    const accountId = req.params.accountId;
+    const transactionId = req.params.transactionId;
+    const transactionData = req.body;
+    const responseFromService = await userService.updateTransaction(userId, accountId, transactionId, transactionData);
+    response.status = 200;
+    response.message = 'Transaction successfully updated';
+    response.body = responseFromService;
+  } catch (error) {
+    response.status = 400;
+    response.message = error.message;
+  }
+  return res.status(response.status).send(response);
+};
+

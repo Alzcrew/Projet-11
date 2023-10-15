@@ -22,6 +22,8 @@ router.put(
   userController.updateUserProfile
 )
 
+router.put('/accounts/:accountId/transactions/:transactionId', tokenValidation.validateToken, userController.updateTransaction);
+
 router.get(
   '/accounts',
   tokenValidation.validateToken,
@@ -29,6 +31,8 @@ router.get(
 )
 
 router.get('/accounts/:accountId/transactions', tokenValidation.validateToken, userController.getTransactions);
+
+router.delete('/accounts/:accountId/transactions/:transactionId', tokenValidation.validateToken, userController.deleteTransaction);
 
 
 module.exports = router
