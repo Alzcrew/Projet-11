@@ -2,6 +2,7 @@
   "name": "vite-template-redux",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://Alzcrew.github.io/Projet-11/Frontend/ArgentBank",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,7 +12,9 @@
     "test": "vitest",
     "format": "prettier --write .",
     "lint": "eslint .",
-    "type-check": "tsc"
+    "type-check": "tsc",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
@@ -39,6 +42,7 @@
     "eslint": "^8.0.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-prettier": "^4.2.1",
+    "gh-pages": "^6.1.0",
     "jsdom": "^21.1.0",
     "prettier": "^2.7.1",
     "prettier-config-nick": "^1.0.2",
